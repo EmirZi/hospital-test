@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Онлайн-тестирование</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .name-edit { width: 160px; max-width: 38vw; border: 0; outline: none; background: transparent; color: inherit; font: inherit; font-weight: 600; padding: 2px 0; }
+    .name-edit:focus { border-bottom: 1px solid currentColor; }
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <main class="container">
+    <section id="start-screen" class="screen-card start-card">
+      <header class="site-header">
+        <div class="brand"><div id="logo" class="logo">TEST</div><div><b>Онлайн тестирование</b><span>Проверьте свои знания</span></div></div>
+        <button class="user-pill" type="button">♙ <span>Войти как Пользователь</span>⌄</button>
+      </header>
+      <div class="start-layout">
+        <div class="welcome-panel">
+          <div class="eyebrow">МЕДИЦИНСКАЯ ПЛАТФОРМА</div>
+          <h1 id="test-title">Онлайн-тест</h1>
+          <p id="test-description">Проверьте свои знания.</p>
+          <div class="welcome-list">
+            <div><i>◷</i><span>Удобный формат</span></div>
+            <div><i>♢</i><span>Быстрая проверка</span></div>
+            <div><i>✓</i><span>Мгновенный результат</span></div>
+          </div>
+          <div class="quote">Знания открывают<br>новые возможности <span>♡</span></div>
+        </div>
+        <div class="test-list">
+          <div class="list-heading" id="catalog-heading">Доступные тесты <small>Выберите тему</small></div>
+          <div id="test-catalog"></div>
+          <label class="field-label" for="participant-name">Ваше имя</label>
+          <input id="participant-name" class="text-input" maxlength="80" placeholder="Введите имя и фамилию">
+          <div class="info"><span id="question-count"></span><span id="time-info"></span><span id="pass-info"></span></div>
+          <button id="start-btn" class="btn full-btn">Начать тест <b>→</b></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="test-screen" class="screen-card hidden test-card">
+      <header class="site-header compact">
+        <div class="brand"><div class="logo">TEST</div><div><b>Онлайн тестирование</b></div></div>
+        <div class="user-name">♙ <input id="participant-name-live" class="name-edit" type="text" maxlength="80" aria-label="Изменить имя участника" autocomplete="name" value=""></div>
+      </header>
+      <div class="test-layout">
+        <aside class="question-nav"><div class="timer-box"><span>Осталось времени</span><strong id="timer">09:42</strong></div></aside>
+        <div class="question-panel">
+          <div class="question-top"><div><span class="small-label">ТЕСТ</span><h2 id="question"></h2></div><span id="progress" class="progress-text"></span></div>
+          <div class="progress-track"><div id="progress-bar"></div></div>
+          <p id="hint" class="hint"></p>
+          <div id="answers"></div>
+          <div class="actions"><button id="next-btn" class="btn" disabled>Далее →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen-card hidden result-card">
+      <header class="site-header compact"><div class="brand"><div class="logo">TEST</div><div><b>Онлайн тестирование</b></div></div><div class="user-name">♙ <span id="result-name-top">Иванов Иван</span>⌄ &nbsp;↪</div></header>
+      <div class="result-wrap">
+        <div class="result-banner"><span class="medal" id="result-medal">✓</span><div><strong id="result-status-title">Тест пройден</strong><small id="result-note">Поздравляем! Вы успешно прошли тест.</small></div></div>
+        <div class="result-title-row"><div><span>Тест</span><strong id="result-test-title">—</strong></div><div><span>Результат</span><strong id="result-number">#0001</strong></div><div><span>Дата завершения</span><strong id="result-date">—</strong></div><div><span>Потрачено времени</span><strong id="result-time">—</strong></div></div>
+        <div class="result-name-line">♙ &nbsp; Ваше имя: <strong id="result-name">—</strong></div>
+        <div class="result-main">
+          <div class="gauge-wrap"><div class="gauge" id="gauge"><div class="gauge-value" id="gauge-value">0%</div></div><div class="gauge-scale"><span>0</span><span>100</span></div></div>
+          <div class="result-table"><div class="table-row table-head"><span>Показатель</span><span>Значение</span></div><div class="table-row"><span>Количество баллов (правильных ответов)</span><strong id="correct-value">0</strong></div><div class="table-row"><span>Максимально возможное количество баллов</span><strong id="max-value">0</strong></div><div class="table-row"><span>Процент</span><strong id="percent-value">0</strong></div><div class="table-row"><span>Статус</span><strong id="status-value">—</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script src="questions.js"></script><script src="script.js"></script>
+</body>
+</html>
