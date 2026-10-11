@@ -84,7 +84,7 @@
   function updateStart(test) {
     $('test-title').textContent = test ? test.title : 'Онлайн-тестирование';
     $('test-description').textContent = test ? (test.description || 'Проверьте свои знания.') : 'Выберите тест и проверьте свои знания.';
-    $('question-count').textContent = test ? `${test.questions.length} вопросов` : `${allTests.length} тестов доступно`;
+    $('question-count').textContent = test ? `${test.questions.length} вопросов` : `${allTests.length} теста доступно`;
     $('pass-info').textContent = test ? `Проходной балл: ${test.passPercent}%` : 'Выберите интересующую тему';
     $('time-info').textContent = test ? (Number(test.timeLimit) > 0 ? `Время: ${test.timeLimit} мин.` : 'Без ограничения времени') : 'Мгновенная проверка результата';
     $('start-btn').textContent = test ? 'Начать тест →' : 'Выберите тест ниже';
