@@ -75,8 +75,6 @@
   function applyTheme(test) {
     document.body.classList.remove(...themes.map(t => `theme-${t}`), 'test-changing');
     document.body.classList.add(`theme-${configTheme(test)}`);
-    const logo = $('logo');
-    if (logo) logo.textContent = ({surgery:'SURG',vaccination:'VAX',admin:'АБ',emergency:'EMS',training:'EDU',dark:'TEST',default:'TEST'})[configTheme(test)];
   }
   function showScreen(id) {
     ['start-screen','test-screen','result-screen'].forEach(s => $(s).classList.toggle('hidden', s !== id));
@@ -89,6 +87,18 @@
     $('time-info').textContent = test ? (Number(test.timeLimit) > 0 ? `Время: ${test.timeLimit} мин.` : 'Без ограничения времени') : 'Мгновенная проверка результата';
     $('start-btn').textContent = test ? 'Начать тест →' : 'Выберите тест ниже';
     $('start-btn').disabled = !test;
+
+    // На главной странице показываем только каталог тестов.
+    // Имя участника, параметры выбранного теста и кнопка старта появляются
+    // после выбора конкретного теста и остаются доступны перед его началом.
+    const hasSelectedTest = Boolean(test);
+    const nameLabel = document.querySelector('label[for="participant-name"]');
+    if (nameLabel) nameLabel.classList.toggle('hidden', !hasSelectedTest);
+    $('participant-name').classList.toggle('hidden', !hasSelectedTest);
+    const infoBox = document.querySelector('.info');
+    if (infoBox) infoBox.classList.toggle('hidden', !hasSelectedTest);
+    $('start-btn').classList.toggle('hidden', !hasSelectedTest);
+
     $('catalog-heading').classList.toggle('hidden', state.directLink);
     $('test-catalog').classList.toggle('hidden', state.directLink);
     if (test) applyTheme(test);
@@ -200,11 +210,15 @@
         if (q.type === 'multiple') {
           state.answers[state.index] = selected.includes(i) ? selected.filter(v=>v!==i) : [...selected,i];
         } else state.answers[state.index] = [i];
+        const warning = $('question-warning');
+        if (warning) warning.hidden = true;
         renderQuestion();
       });
       box.append(button);
     });
     $('next-btn').disabled = false;
+    const warning = $('question-warning');
+    if (warning) warning.hidden = true;
     $('next-btn').textContent = state.index === state.questions.length - 1 ? 'Завершить тест' : 'Далее →';
   }
   function finishTest(expired = false) {
@@ -276,8 +290,29 @@
   $('start-btn').addEventListener('click',startTest);
   $('next-btn').addEventListener('click',() => {
     if (state.finished) return;
-    if (state.index < state.questions.length - 1) { state.index++; renderQuestion(); }
-    else finishTest(false);
+    const selected = state.answers[state.index] || [];
+    const warning = $('question-warning');
+    if (!selected.length) {
+      if (warning) {
+        warning.hidden = false;
+        warning.classList.remove('warning-shake');
+        void warning.offsetWidth;
+        warning.classList.add('warning-shake');
+        warning.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }
+      return;
+    }
+    if (warning) warning.hidden = true;
+    if (state.index < state.questions.length - 1) {
+      state.index++;
+      const panel = document.querySelector('.question-panel');
+      if (panel) {
+        panel.classList.remove('question-transition');
+        void panel.offsetWidth;
+        panel.classList.add('question-transition');
+      }
+      renderQuestion();
+    } else finishTest(false);
   });
   window.addEventListener('popstate',() => {
     const id = new URLSearchParams(location.search).get('test');
